@@ -39,6 +39,16 @@ class Counter extends Component {
                 <CounterControl label="Add" clicked={this.props.onAdd}  />
                 <CounterControl label="Subtract" clicked={this.props.onSubstract}  />
                 <hr/>
+                <button onClick={this.props.onStoreResults}>Store Results</button>
+                <ul>
+                    {this.props.storedResult.map((res)=>{
+                        return(
+                            <li key={res.id} onClick={()=>this.props.onDeleteResults(res.id)}>{res.val}</li>
+                        )
+                    })}
+                   
+                </ul>
+
             </div>
         );
     }
@@ -52,7 +62,8 @@ class Counter extends Component {
 //so we are using props instead of state
 const mapStateToProps=state=>{
     return {
-        ctr:state.counter
+        ctr:state.counter,
+        storedResult:state.results
     }
 };
 //which kind of action i want to dispatch in this container
@@ -65,6 +76,8 @@ const mapDispatchToProps=dispatch=>{
         onDecrementCounter:()=>dispatch({type:'DECREMENT'}),
         onAdd:()=>dispatch({type:"ADD",val:10}),
         onSubstract:()=>dispatch({type:"SUBSTRACT",val:5}),
+        onStoreResults:()=>dispatch({type:'STORE_RESULT'}),
+        onDeleteResults:(id)=>dispatch({type:'DELETE_RESULT',resultElId:id})
     }
     //then we pass this prop to   <CounterControl and adjust the reducer to handle this action
 
